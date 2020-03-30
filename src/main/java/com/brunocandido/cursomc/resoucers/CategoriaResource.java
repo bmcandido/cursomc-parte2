@@ -26,12 +26,12 @@ public class CategoriaResource {
 
 	/// {id} vai concatenar o Id buscado na URL
 
-	public ResponseEntity<?> find(@PathVariable Integer id) { // Também, é necessario acrescentar @PathVariable que
+	public ResponseEntity<Categoria> find(@PathVariable Integer id) { // Também, é necessario acrescentar @PathVariable que
 																// Vincula o id do RequestingMaping ao objeto que busca
 																// o ID "FIND"
 																// ResponseEntity<?> encapsula a resposta para o REST
 
-		Categoria obj = service.buscar(id); // Acessa o Objeto de Repositorio CategoriaRepository
+		Categoria obj = service.find(id); // Acessa o Objeto de Repositorio CategoriaRepository
 
 		return ResponseEntity.ok().body(obj); // Retornando o Objeto Encontrado na CAtegoria Repository
 
@@ -44,7 +44,7 @@ public class CategoriaResource {
 
 	}
 
-	//Serve para acrescentar a URL de coneção classe Categoria exemplo localhost:8580/categoria/1
+	//Serve para acrescentar/inserir a URL de coneção classe Categoria exemplo localhost:8580/categoria/1, insere dentro do post
 	@RequestMapping(method = RequestMethod.POST)
 	public ResponseEntity<Void> insert(@RequestBody Categoria obj) {
 		obj = service.insert(obj);
@@ -52,6 +52,16 @@ public class CategoriaResource {
 				.buildAndExpand(obj.getId()).toUri(); 
 		return ResponseEntity.created(uri).build();
 
+	}
+	
+	//Serve para alterar/update uma url já existente (Dados que estao nela)
+	
+	@RequestMapping(value = "/{id}", method = RequestMethod.PUT) 
+	public ResponseEntity<Void> update(@RequestBody Categoria obj, @PathVariable Integer id){
+		obj.setId(id);
+		obj=service.update(obj);
+		return ResponseEntity.noContent().build();
+		
 	}
 
 }

@@ -16,7 +16,7 @@ public class ClassificacaoProdutoService {
 	@Autowired // Anotação do Spring
 	ClassificacaoProdutoRepository classificacao;
 	
-	public ClassificacaoProduto buscar(Integer id) {
+	public ClassificacaoProduto find(Integer id) {
 		Optional<ClassificacaoProduto> obj = classificacao.findById(id);
 		return obj.orElseThrow(() -> new ObjectNotFoundException(
 				"Objeto não encontrado! Id: " + id + ", Tipo: " + Categoria.class.getName()));

@@ -20,9 +20,9 @@ public class ClassificacaoProdutoResource {
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 
-	public ResponseEntity<?> find(@PathVariable Integer id) {
+	public ResponseEntity<ClassificacaoProduto> find(@PathVariable Integer id) {
 
-		ClassificacaoProduto obj = service.buscar(id); // Acessa o Objeto de Repositorio CategoriaRepository
+		ClassificacaoProduto obj = service.find(id); // Acessa o Objeto de Repositorio CategoriaRepository
 
 		return ResponseEntity.ok().body(obj); // Retornando o Objeto Encontrado na CAtegoria Repository
 
