@@ -20,7 +20,7 @@ public class Categoria implements Serializable {
 														// ser mudado, quando salvar altomaticamente ele irá criar a
 														// tabela no banco de dados B2-b
 	private Integer id;
-	private String Nome;
+	private String nome;
     
 	
 	//@JsonManagedReference //Acrescentado para tratar erro no momento que roda o Jason
@@ -34,7 +34,7 @@ public class Categoria implements Serializable {
 	public Categoria(Integer id, String nome) {
 		super();
 		this.id = id;
-		Nome = nome;
+		this.nome = nome;
 	}
 
 	public Integer getId() {
@@ -46,7 +46,7 @@ public class Categoria implements Serializable {
 	}
 
 	public String getNome() {
-		return Nome;
+		return nome;
 	}
 
 	public List<Produto> getProdutos() {
@@ -58,7 +58,7 @@ public class Categoria implements Serializable {
 	}
 
 	public void setNome(String nome) {
-		Nome = nome;
+		this.nome = nome;
 	}
 
 	@Override
