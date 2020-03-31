@@ -11,11 +11,10 @@ import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 
 import com.brunocandido.cursomc.domain.Categoria;
+import com.brunocandido.cursomc.dto.CategoriaDTO;
 import com.brunocandido.cursomc.exceptions.DataIntegrityException;
 import com.brunocandido.cursomc.exceptions.ObjectNotFoundException;
 import com.brunocandido.cursomc.repositories.CategoriaRepository;
-
-import ch.qos.logback.classic.pattern.LineSeparatorConverter;
 
 //2º Camada - Chama Repository
 
@@ -59,12 +58,19 @@ public class CategoriaService {
 
 		return repo.findAll();
 	}
-	
-	//Serve para quando chamar no JSON ele vai restringir ou repaginar a consulta e limitar de acordo com
+
+	// Serve para quando chamar no JSON ele vai restringir ou repaginar a consulta e
+	// limitar de acordo com
 	// os argumentos, isso vale para quando temos muitos dados em um servidor
-	public Page<Categoria> findPage(Integer page, Integer linesPerPage, String orderBy, String direction  ){
+	public Page<Categoria> findPage(Integer page, Integer linesPerPage, String orderBy, String direction) {
 		PageRequest pageRequest = PageRequest.of(page, linesPerPage, Direction.valueOf(direction), orderBy);
-		return repo.findAll(pageRequest);		
+		return repo.findAll(pageRequest);
+	}
+
+	// Para atender as anotações dentro da CATEGORIA DTO nas validações dos campos @NotEmpty
+	
+	public Categoria fromDTO(CategoriaDTO objDto) {  
+		return new Categoria(objDto.getId(), objDto.getNome());
 	}
 
 }

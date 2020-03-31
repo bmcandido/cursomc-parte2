@@ -4,6 +4,8 @@ import java.net.URI;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
@@ -19,6 +21,8 @@ import com.brunocandido.cursomc.domain.Categoria;
 import com.brunocandido.cursomc.dto.CategoriaDTO;
 import com.brunocandido.cursomc.services.CategoriaService;
 
+
+//REST CONTROLE, quando se fala em REST quer dizer que são as categorias resources
 @RestController
 @RequestMapping(value = "/categorias")
 public class CategoriaResource {
@@ -52,19 +56,22 @@ public class CategoriaResource {
 
 	// Serve para acrescentar/inserir a URL de coneção classe Categoria exemplo
 	// localhost:8580/categoria/1, insere dentro do post
-	@RequestMapping(method = RequestMethod.POST)
-	public ResponseEntity<Void> insert(@RequestBody Categoria obj) {
+	
+	@RequestMapping(method=RequestMethod.POST)
+	public ResponseEntity<Void> insert(@Valid @RequestBody CategoriaDTO objDto) {
+		Categoria obj = service.fromDTO(objDto);
 		obj = service.insert(obj);
-		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getId()).toUri();
+		URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
+			.path("/{id}").buildAndExpand(obj.getId()).toUri();
 		return ResponseEntity.created(uri).build();
-
 	}
 
 	// Serve para alterar/update uma url já existente (Dados que estao nela)
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
-	public ResponseEntity<Void> update(@RequestBody Categoria obj, @PathVariable Integer id) {
-		obj.setId(id);
+	public ResponseEntity<Void> update(@Valid @RequestBody CategoriaDTO objDto, @PathVariable Integer id) {
+		Categoria obj = service.fromDTO(objDto);
+		objDto.setId(id);
 		obj = service.update(obj);
 		return ResponseEntity.noContent().build();
 
