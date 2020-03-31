@@ -5,12 +5,17 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 
 import com.brunocandido.cursomc.domain.Categoria;
 import com.brunocandido.cursomc.exceptions.DataIntegrityException;
 import com.brunocandido.cursomc.exceptions.ObjectNotFoundException;
 import com.brunocandido.cursomc.repositories.CategoriaRepository;
+
+import ch.qos.logback.classic.pattern.LineSeparatorConverter;
 
 //2º Camada - Chama Repository
 
@@ -53,6 +58,13 @@ public class CategoriaService {
 	public List<Categoria> findAll() {
 
 		return repo.findAll();
+	}
+	
+	//Serve para quando chamar no JSON ele vai restringir ou repaginar a consulta e limitar de acordo com
+	// os argumentos, isso vale para quando temos muitos dados em um servidor
+	public Page<Categoria> findPage(Integer page, Integer linesPerPage, String orderBy, String direction  ){
+		PageRequest pageRequest = PageRequest.of(page, linesPerPage, Direction.valueOf(direction), orderBy);
+		return repo.findAll(pageRequest);		
 	}
 
 }
