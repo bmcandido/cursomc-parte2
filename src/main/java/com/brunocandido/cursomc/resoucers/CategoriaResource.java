@@ -26,10 +26,11 @@ public class CategoriaResource {
 
 	/// {id} vai concatenar o Id buscado na URL
 
-	public ResponseEntity<Categoria> find(@PathVariable Integer id) { // Também, é necessario acrescentar @PathVariable que
-																// Vincula o id do RequestingMaping ao objeto que busca
-																// o ID "FIND"
-																// ResponseEntity<?> encapsula a resposta para o REST
+	public ResponseEntity<Categoria> find(@PathVariable Integer id) { // Também, é necessario acrescentar @PathVariable
+																		// que
+		// Vincula o id do RequestingMaping ao objeto que busca
+		// o ID "FIND"
+		// ResponseEntity<?> encapsula a resposta para o REST
 
 		Categoria obj = service.find(id); // Acessa o Objeto de Repositorio CategoriaRepository
 
@@ -44,24 +45,33 @@ public class CategoriaResource {
 
 	}
 
-	//Serve para acrescentar/inserir a URL de coneção classe Categoria exemplo localhost:8580/categoria/1, insere dentro do post
+	// Serve para acrescentar/inserir a URL de coneção classe Categoria exemplo
+	// localhost:8580/categoria/1, insere dentro do post
 	@RequestMapping(method = RequestMethod.POST)
 	public ResponseEntity<Void> insert(@RequestBody Categoria obj) {
 		obj = service.insert(obj);
-		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
-				.buildAndExpand(obj.getId()).toUri(); 
+		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getId()).toUri();
 		return ResponseEntity.created(uri).build();
 
 	}
-	
-	//Serve para alterar/update uma url já existente (Dados que estao nela)
-	
-	@RequestMapping(value = "/{id}", method = RequestMethod.PUT) 
-	public ResponseEntity<Void> update(@RequestBody Categoria obj, @PathVariable Integer id){
+
+	// Serve para alterar/update uma url já existente (Dados que estao nela)
+
+	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
+	public ResponseEntity<Void> update(@RequestBody Categoria obj, @PathVariable Integer id) {
 		obj.setId(id);
-		obj=service.update(obj);
+		obj = service.update(obj);
 		return ResponseEntity.noContent().build();
-		
+
 	}
 
+	// Serve para deletar
+
+	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
+
+	public ResponseEntity<Void> delete(@PathVariable Integer id) {
+		service.delete(id);
+		return ResponseEntity.noContent().build();
+
+	}
 }
