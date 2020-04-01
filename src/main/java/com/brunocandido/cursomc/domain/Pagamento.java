@@ -14,22 +14,24 @@ import com.brunocandido.cursomc.enuns.EstadoPagamento;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
-@Inheritance(strategy=InheritanceType.JOINED) // Usado para instanciar Tabela  e Subclasses
+@Inheritance(strategy = InheritanceType.JOINED) // Usado para instanciar Tabela e Subclasses
 // no nosso caso PAgamentoBoleto e PagaemntoComCartao
-public abstract class Pagamento implements Serializable { //Abstract para garantir que eu tenho que instanciar uma classe de Extenção
-
+public abstract class Pagamento implements Serializable { // Abstract para garantir que eu tenho que instanciar uma
+															// classe de Extenção
 
 	private static final long serialVersionUID = 1L;
-	
+
 	@Id
-	//@GeneratedValue(strategy = GenerationType.IDENTITY)  não possui pois o Id é do pedido e não do Pagamento
+	// @GeneratedValue(strategy = GenerationType.IDENTITY) não possui pois o Id é do
+	// pedido e não do Pagamento
 	private Integer id;
 	private Integer estado;
-	
+
 	@JsonIgnore
-	//@JsonBackReference // Em contrapartida na Classe pagamento tenho a anotação @JsonManagedReference
+	// @JsonBackReference // Em contrapartida na Classe pagamento tenho a anotação
+	// @JsonManagedReference
 	@OneToOne
-	@JoinColumn(name="pedido_id")
+	@JoinColumn(name = "pedido_id")
 	@MapsId // Garante que o Id informado aqui é o mesmo que está no pedido
 	private Pedido pedido;
 
@@ -40,7 +42,7 @@ public abstract class Pagamento implements Serializable { //Abstract para garant
 	public Pagamento(Integer id, EstadoPagamento estado, Pedido pedido) {
 		super();
 		this.id = id;
-		this.estado = estado.getCod();
+		this.estado = (estado == null) ? null : estado.getCod();
 		this.pedido = pedido;
 	}
 
@@ -53,7 +55,7 @@ public abstract class Pagamento implements Serializable { //Abstract para garant
 	}
 
 	public EstadoPagamento getEstado() {
-		return EstadoPagamento.toEnum(estado); //Para Pegar o numero inteiro dentro da Classe ENUM EstadoPagamento
+		return EstadoPagamento.toEnum(estado); // Para Pegar o numero inteiro dentro da Classe ENUM EstadoPagamento
 	}
 
 	public void setEstado(EstadoPagamento estado) {

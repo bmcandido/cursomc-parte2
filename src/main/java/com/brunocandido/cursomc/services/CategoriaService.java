@@ -36,11 +36,20 @@ public class CategoriaService {
 		return repo.save(obj);
 	}
 
-	public Categoria update(Categoria obj) { // Metodo vinculado a CategoriaResource
+/*//	/*
+//	 * public Categoria update(Categoria obj) { // Metodo vinculado a
+//	 * CategoriaResource
+//	 * 
+//	 * find(obj.getId()); // Busca o metodo find e devolve a excessao caso ele nao
+//	 * encontre public // Categoria find(Integer id) { return repo.save(obj);
+//	 * 
+//	 * }
+//	 */
 
-		find(obj.getId()); // Busca o metodo find e devolve a excessao caso ele nao encontre public
-							// Categoria find(Integer id) {
-		return repo.save(obj);
+	public Categoria update(Categoria obj) {
+		Categoria newObj = find(obj.getId());
+		updateData(newObj, obj);
+		return repo.save(newObj);
 	}
 
 	public void delete(Integer id) {
@@ -71,6 +80,11 @@ public class CategoriaService {
 	
 	public Categoria fromDTO(CategoriaDTO objDto) {  
 		return new Categoria(objDto.getId(), objDto.getNome());
+	}
+	
+	private void updateData(Categoria newObj, Categoria obj) {
+		newObj.setNome(obj.getNome());
+	
 	}
 
 }
